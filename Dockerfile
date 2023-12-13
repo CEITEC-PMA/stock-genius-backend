@@ -1,15 +1,7 @@
-FROM node:alpine
-
-RUN mkdir -p /usr/src/node-app && chown -R node:node /usr/src/node-app
-
-WORKDIR /usr/src/node-app
-
-COPY package.json yarn.lock ./
+FROM node:20.5.1-slim
 
 USER node
 
-RUN yarn install --pure-lockfile
+WORKDIR /home/node/app
 
-COPY --chown=node:node . .
-
-EXPOSE 3000
+CMD ["tail", "-f", "/dev/null"]
