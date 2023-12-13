@@ -8,11 +8,28 @@ const register = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send({ user, tokens });
 });
 
+const registerCpf = catchAsync(async (req, res) => {
+  const user = await userService.createUserCpf(req.body);
+  const tokens = await tokenService.generateAuthTokens(user);
+  res.status(httpStatus.CREATED).send({ user, tokens });
+});
+
 const login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
   const user = await authService.loginUserWithEmailAndPassword(email, password);
   const tokens = await tokenService.generateAuthTokens(user);
   res.send({ user, tokens });
+});
+
+const loginCpf = catchAsync(async (req, res) => {
+  const { username, password } = req.body;
+  const user = await authService.loginUserWithCpfAndPassword(username, password);
+  if (user.message) {
+    res.status(200).send(user);
+  } else {
+    const tokens = await tokenService.generateAuthTokens(user);
+    res.send({ user, tokens });
+  }
 });
 
 const logout = catchAsync(async (req, res) => {
@@ -49,7 +66,9 @@ const verifyEmail = catchAsync(async (req, res) => {
 
 module.exports = {
   register,
+  registerCpf,
   login,
+  loginCpf,
   logout,
   refreshTokens,
   forgotPassword,

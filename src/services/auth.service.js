@@ -20,6 +20,23 @@ const loginUserWithEmailAndPassword = async (email, password) => {
 };
 
 /**
+ * Login with username and password
+ * @param {string} username
+ * @param {string} password
+ * @returns {Promise<User>}
+ */
+const loginUserWithCpfAndPassword = async (username, password) => {
+  const user = await userService.getUserByCpf(username);
+  if (!user || !(await user.isPasswordMatch(password))) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'CPF ou senha incorreto');
+  }
+  if (user.delete === true) throw new ApiError(httpStatus.UNAUTHORIZED, 'Usuário não existe');
+  if (user.acesso) return user;
+
+  return { message: 'Primeiro acesso' };
+};
+
+/**
  * Logout
  * @param {string} refreshToken
  * @returns {Promise}
@@ -92,6 +109,7 @@ const verifyEmail = async (verifyEmailToken) => {
 
 module.exports = {
   loginUserWithEmailAndPassword,
+  loginUserWithCpfAndPassword,
   logout,
   refreshAuth,
   resetPassword,

@@ -14,6 +14,15 @@ const createUser = async (userBody) => {
   return User.create(userBody);
 };
 
+const createUserCpf = async (userBody) => {
+  if (await User.isCpfTaken(userBody.username)) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'CPF already taken');
+  }
+  // eslint-disable-next-line no-param-reassign
+  userBody.password = 'semed@gestao';
+  return User.create(userBody);
+};
+
 /**
  * Query for users
  * @param {Object} filter - Mongo filter
@@ -81,6 +90,7 @@ const deleteUserById = async (userId) => {
 
 module.exports = {
   createUser,
+  createUserCpf,
   queryUsers,
   getUserById,
   getUserByEmail,

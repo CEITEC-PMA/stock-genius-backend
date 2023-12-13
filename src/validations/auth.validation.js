@@ -1,4 +1,5 @@
-const Joi = require('joi');
+const { validator } = require('cpf-cnpj-validator');
+const Joi = require('joi').extend(validator);
 const { password } = require('./custom.validation');
 
 const register = {
@@ -9,9 +10,24 @@ const register = {
   }),
 };
 
+const registerCpf = {
+  body: Joi.object().keys({
+    username: Joi.document().cpf(),
+    email: Joi.string().required().email(),
+    name: Joi.string().required(),
+  }),
+};
+
 const login = {
   body: Joi.object().keys({
     email: Joi.string().required(),
+    password: Joi.string().required(),
+  }),
+};
+
+const loginCpf = {
+  body: Joi.object().keys({
+    username: Joi.document().cpf(),
     password: Joi.string().required(),
   }),
 };
@@ -51,7 +67,9 @@ const verifyEmail = {
 
 module.exports = {
   register,
+  registerCpf,
   login,
+  loginCpf,
   logout,
   refreshTokens,
   forgotPassword,
