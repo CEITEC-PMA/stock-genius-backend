@@ -19,7 +19,7 @@ const createUserCpf = async (userBody) => {
     throw new ApiError(httpStatus.BAD_REQUEST, 'CPF already taken');
   }
   // eslint-disable-next-line no-param-reassign
-  userBody.password = 'semed@gestao';
+  userBody.password = 'semed@123456';
   return User.create(userBody);
 };
 
