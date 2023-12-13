@@ -75,6 +75,19 @@ const updateUserById = async (userId, updateBody) => {
 };
 
 /**
+ * Get user by email
+ * @param {string} username
+ * @returns {Promise<User>}
+ */
+const getUserByCpf = async (username) => {
+  const user = await User.findOne({ username });
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Usuario não encontrado!');
+  }
+  return user;
+};
+
+/**
  * Delete user by id
  * @param {ObjectId} userId
  * @returns {Promise<User>}
@@ -93,6 +106,7 @@ module.exports = {
   createUserCpf,
   queryUsers,
   getUserById,
+  getUserByCpf,
   getUserByEmail,
   updateUserById,
   deleteUserById,
