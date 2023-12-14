@@ -37,6 +37,14 @@ const logout = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const primeiroAcesso = catchAsync(async (req, res) => {
+  const { username, password } = req.body;
+  await authService.resetPasswordPrimeiroAcesso(username, password);
+  const user = await userService.updateAcessoTrue(username);
+  const tokens = await tokenService.generateAuthTokens(user);
+  res.send({ user, tokens });
+});
+
 const refreshTokens = catchAsync(async (req, res) => {
   const tokens = await authService.refreshAuth(req.body.refreshToken);
   res.send({ ...tokens });
@@ -69,6 +77,7 @@ module.exports = {
   registerCpf,
   login,
   loginCpf,
+  primeiroAcesso,
   logout,
   refreshTokens,
   forgotPassword,

@@ -11,6 +11,7 @@ router.post('/register-cpf', validate(authValidation.registerCpf), authControlle
 router.post('/login', validate(authValidation.login), authController.login);
 router.post('/login-cpf', validate(authValidation.loginCpf), authController.loginCpf);
 router.post('/logout', validate(authValidation.logout), authController.logout);
+router.post('/primeiroacesso', validate(authValidation.primeiroAcesso), authController.primeiroAcesso);
 router.post('/refresh-tokens', validate(authValidation.refreshTokens), authController.refreshTokens);
 router.post('/forgot-password', validate(authValidation.forgotPassword), authController.forgotPassword);
 router.post('/reset-password', validate(authValidation.resetPassword), authController.resetPassword);

@@ -36,6 +36,15 @@ const loginUserWithCpfAndPassword = async (username, password) => {
   return { message: 'Primeiro acesso' };
 };
 
+const resetPasswordPrimeiroAcesso = async (cpf, newPassword) => {
+  const user = await userService.getUserByCpf(cpf);
+  if (!user) {
+    throw new Error();
+  }
+  await userService.updateUserById(user.id, { password: newPassword });
+  await Token.deleteMany({ user: user.id, type: tokenTypes.RESET_PASSWORD });
+};
+
 /**
  * Logout
  * @param {string} refreshToken
@@ -110,6 +119,7 @@ const verifyEmail = async (verifyEmailToken) => {
 module.exports = {
   loginUserWithEmailAndPassword,
   loginUserWithCpfAndPassword,
+  resetPasswordPrimeiroAcesso,
   logout,
   refreshAuth,
   resetPassword,

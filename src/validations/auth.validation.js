@@ -38,6 +38,13 @@ const logout = {
   }),
 };
 
+const primeiroAcesso = {
+  body: Joi.object().keys({
+    username: Joi.document().cpf(),
+    password: Joi.string().required().custom(password),
+  }),
+};
+
 const refreshTokens = {
   body: Joi.object().keys({
     refreshToken: Joi.string().required(),
@@ -70,6 +77,7 @@ module.exports = {
   registerCpf,
   login,
   loginCpf,
+  primeiroAcesso,
   logout,
   refreshTokens,
   forgotPassword,

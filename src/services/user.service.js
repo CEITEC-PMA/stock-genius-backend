@@ -87,6 +87,16 @@ const getUserByCpf = async (username) => {
   return user;
 };
 
+const updateAcessoTrue = async (cpf) => {
+  const user = await getUserByCpf(cpf);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  user.acesso = true;
+  await user.save();
+  return user;
+};
+
 /**
  * Delete user by id
  * @param {ObjectId} userId
@@ -105,6 +115,7 @@ module.exports = {
   createUser,
   createUserCpf,
   queryUsers,
+  updateAcessoTrue,
   getUserById,
   getUserByCpf,
   getUserByEmail,
